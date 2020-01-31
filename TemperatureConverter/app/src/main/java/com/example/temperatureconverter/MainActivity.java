@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (strF.length() == 0) {
                     Toast.makeText(v.getContext(),
-                            "ERROR: Input value for F degree is empty!!!",
+                            "ERROR: Input value for F degree is empty",
                             Toast.LENGTH_LONG).show();
                     Log.e("Error", "String of txtF is empty!");
                     return;
@@ -43,9 +43,9 @@ public class MainActivity extends AppCompatActivity {
                     valF = Double.parseDouble(strF);
                 } catch (Exception ex) {
                     ex.printStackTrace();
-                    Log.e("Error", "String of txtF is not parsable!");
+                    Log.e("Error", "String of txtF is not parsable");
                     Toast.makeText(v.getContext(),
-                            "ERROR: Input value for F degree is invalid!!!",
+                            "ERROR: Input value for F degree is invalid",
                             Toast.LENGTH_LONG).show();
                     return;
                 }

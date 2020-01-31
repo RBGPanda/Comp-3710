@@ -40,7 +40,7 @@
             android:layout_width="300dp"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:inputType="numberDecimal"
+            android:inputType="numberDecimal|numberSigned"
             android:hint="Temperature In fahrenheit"
             android:textColorHint="#000"
             android:textAlignment="viewEnd"
