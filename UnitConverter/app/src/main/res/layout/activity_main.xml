@@ -1,18 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:orientation="horizontal"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/txtF"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="F" />
+
+        <EditText
+            android:id="@+id/txtC"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="C" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        >
+        <EditText
+            android:id="@+id/txtKm"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="km" />
+
+        <EditText
+            android:id="@+id/txtMi"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="mi" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        >
+        <EditText
+            android:id="@+id/txtKg"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="kg" />
+
+        <EditText
+            android:id="@+id/txtLb"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="lb" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingTop="50dp"
+        android:paddingBottom="50dp"
+        >
+        <EditText
+            android:id="@+id/txtLi"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="li" />
+
+        <EditText
+            android:id="@+id/txtGa"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="numberDecimal" />
+
+        <TextView
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="gallon" />
+
+    </LinearLayout>
+
+
+
+</LinearLayout>
