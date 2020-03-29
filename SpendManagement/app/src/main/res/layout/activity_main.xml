@@ -6,11 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".MainActivity">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -27,7 +22,8 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="10dp"
                 android:orientation="horizontal"
                 >
 
@@ -55,7 +51,7 @@
                     android:layout_width="wrap_content"
                     android:layout_weight="2"
                     android:inputType="text"
-                    android:hint="description"
+                    android:hint="text"
                     android:textAlignment="center"
                     android:text=""
                     />
@@ -84,17 +80,19 @@
                 android:textSize="40dp"
                 android:textAlignment="center"
                 android:text="History" />
-
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
             <LinearLayout
-                android:id="@+id/log"
+                android:id="@+id/history"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
             </LinearLayout>
+            </ScrollView>
 
         </LinearLayout>
 
-    </ScrollView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

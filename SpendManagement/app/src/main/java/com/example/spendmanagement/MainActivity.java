@@ -19,11 +19,11 @@ public class MainActivity extends AppCompatActivity {
     TextView bal;
     Button add, sub;
     EditText date, amount, desc;
-    LinearLayout log;
+    LinearLayout history;
     SharedPreferences sharedPreferences;
     public static final String spendManagement = "SpendingManagement";
     public static final String savedBal = "SavedBalance";
-    public static final String savedLog = "savedLog";
+    public static final String savedhistory = "savedhistory";
     private static DecimalFormat decimalformat = new DecimalFormat("0.00");
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         add = findViewById(R.id.add);
         sub = findViewById(R.id.sub);
         bal = findViewById(R.id.bal);
-        log = findViewById(R.id.log);
+        history = findViewById(R.id.history);
 
         sharedPreferences = getSharedPreferences(spendManagement, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -48,13 +48,13 @@ public class MainActivity extends AppCompatActivity {
             editor.putFloat(savedBal, 0.0f);
         }
 
-        if(sharedPreferences.contains(savedLog))    {
-            for (int i = 0; i <= sharedPreferences.getInt(savedLog, 0); i++)    {
-                log.addView(createNewTextView(sharedPreferences.getString(Integer.toString(i), "")));
+        if(sharedPreferences.contains(savedhistory))    {
+            for (int i = 0; i <= sharedPreferences.getInt(savedhistory, 0); i++)    {
+                history.addView(createNewTextView(sharedPreferences.getString(Integer.toString(i), "")));
             }
         }
         else    {
-            editor.putInt(savedLog, -1);
+            editor.putInt(savedhistory, -1);
         }
 
         add.setOnClickListener(clickAdd());
@@ -65,13 +65,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String a = "Adding $" + amount.getText().toString() + " on " + date.getText().toString() + " from " + desc.getText().toString();
-                log.addView(createNewTextView(a));
+                history.addView(createNewTextView(a));
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 float currentBal = sharedPreferences.getFloat(savedBal, 0.0f) + Float.parseFloat(amount.getText().toString());
-                int saved = sharedPreferences.getInt(savedLog, -1);
+                int saved = sharedPreferences.getInt(savedhistory, -1);
                 saved += 1;
                 editor.putFloat(savedBal, currentBal);
-                editor.putInt(savedLog, saved);
+                editor.putInt(savedhistory, saved);
                 editor.putString(Integer.toString(saved), a);
                 editor.commit();
                 bal.setText("Current Balance: $" + decimalformat.format(sharedPreferences.getFloat(savedBal, 0.0f)));
@@ -84,13 +84,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String a = "Adding $" + amount.getText().toString() + " on " + date.getText().toString() + " from " + desc.getText().toString();
-                log.addView(createNewTextView(a));
+                history.addView(createNewTextView(a));
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 float currentBal = sharedPreferences.getFloat(savedBal, 0.0f) - Float.parseFloat(amount.getText().toString());
-                int saved = sharedPreferences.getInt(savedLog, -1);
+                int saved = sharedPreferences.getInt(savedhistory, -1);
                 saved += 1;
                 editor.putFloat(savedBal, currentBal);
-                editor.putInt(savedLog, saved);
+                editor.putInt(savedhistory, saved);
                 editor.putString(Integer.toString(saved), a);
                 editor.commit();
                 bal.setText("Current Balance: $" + decimalformat.format(sharedPreferences.getFloat(savedBal, 0.0f)));
