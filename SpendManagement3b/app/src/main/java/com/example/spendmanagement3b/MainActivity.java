@@ -1,6 +1,6 @@
 package com.example.spendmanagement3b;
-import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -58,10 +58,10 @@ public class MainActivity extends AppCompatActivity {
 
         db = new SpendDB(this);
 
-        Cursor savedData = db.getData();
-        while(savedData.moveToNext()) {
-            history.addView(createNewTextView(savedData.getString(1)));
-            rename = savedData.getFloat(2);
+        Cursor saved = db.getData();
+        while(saved.moveToNext()) {
+            history.addView(createNewTextView(saved.getString(1)));
+            rename = saved.getFloat(2);
         }
 
         bal.setText("Current Balance: $" + df.format(rename));
@@ -108,9 +108,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 history.removeAllViews();
 
-                Cursor savedData = db.getData();
-                while(savedData.moveToNext()) {
-                    history.addView(createNewTextView(savedData.getString(1)));
+                Cursor saved = db.getData();
+                while(saved.moveToNext()) {
+                    history.addView(createNewTextView(saved.getString(1)));
                 }
 
                 String a = "Adding $" + amount.getText().toString() + " on " + dateButton.getText().toString() +
@@ -132,9 +132,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 history.removeAllViews();
 
-                Cursor savedData = db.getData();
-                while(savedData.moveToNext()) {
-                    history.addView(createNewTextView(savedData.getString(1)));
+                Cursor saved = db.getData();
+                while(saved.moveToNext()) {
+                    history.addView(createNewTextView(saved.getString(1)));
                 }
 
                 String a = "Spent $" + amount.getText().toString() + " on " + dateButton.getText().toString() +
