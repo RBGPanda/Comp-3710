@@ -1,0 +1,2 @@
+rootProject.name='SpendManagement3b'
+include ':app'
