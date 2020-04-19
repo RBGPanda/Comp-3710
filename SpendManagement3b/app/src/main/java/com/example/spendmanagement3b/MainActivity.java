@@ -1,103 +1,150 @@
 package com.example.spendmanagement3b;
-
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
-import android.app.DatePickerDialog;
-import android.app.Dialog;
-import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
-import android.content.SharedPreferences;
 import java.text.DecimalFormat;
-import java.util.Calendar;
-import java.util.Date;
-
-import android.app.TimePickerDialog;
-
-import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
-import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
-
+import android.app.DatePickerDialog;
+import java.util.Calendar;
+import android.widget.DatePicker;
 
 public class MainActivity extends AppCompatActivity {
-    DatePickerDialog datePickerDialog;
-    TextView bal;
-    Button add, sub, dateButton, startDate, endDate;
-    EditText amount, desc, startAmount, endAmount;
-    LinearLayout history;
-    SharedPreferences sharedPreferences;
-    private static DecimalFormat decimalformat = new DecimalFormat("0.00");
+
     SpendDB db;
-    float rename;
-    int year, month, day, date;
+    private static DecimalFormat df = new DecimalFormat("0.00");
+    Button add, sub, dateButton, startDate, endDate, search;
+    EditText amount, desc, startAmount, endAmount;
+    TextView bal;
+    LinearLayout history;
+    DatePickerDialog datePickerDialog;
+    int year, month, dayOfMonth;
     Calendar c;
+    float rename, lowAmount, highAmount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        c = Calendar.getInstance();
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        amount = findViewById(R.id.amount);
-        desc = findViewById(R.id.desc);
-        add = findViewById(R.id.add);
-        sub = findViewById(R.id.sub);
-        bal = findViewById(R.id.bal);
-        history = findViewById(R.id.history);
-        add.setOnClickListener(clickAdd());
-        sub.setOnClickListener(clickSub());
-        db = new SpendDB(this);
-        rename = 0.0f;
+        c = Calendar.getInstance();
+        search = findViewById(R.id.search);
+        search.setOnClickListener(onClickForSearch());
+        startAmount = findViewById(R.id.startAmount);
+        endAmount = findViewById(R.id.endAmount);
+        endDate = findViewById(R.id.endDate);
+        endDate.setOnClickListener(onClickForEndDate());
         dateButton = findViewById(R.id.dateButton);
         dateButton.setOnClickListener(ClickForDate());
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
+        add = findViewById(R.id.add);
+        add.setOnClickListener(clickAdd());
+        sub = findViewById(R.id.sub);
+        sub.setOnClickListener(clickSub());
+        amount = findViewById(R.id.amount);
+        desc = findViewById(R.id.desc);
+        bal = findViewById(R.id.bal);
+        history = findViewById(R.id.history);
         startDate = findViewById(R.id.startDate);
-        endDate = findViewById(R.id.endDate);
-        startDate.setOnClickListener(ClickForStartDate());
-        endDate.setOnClickListener(ClickForEndDate());
+        startDate.setOnClickListener(onClickForStartDate());
+        rename = 0.0f;
 
+        db = new SpendDB(this);
 
-        Cursor saved = db.getData();
-        while (saved.moveToNext()) {
-            history.addView(createNewTextView(saved.getString(1)));
-            rename = saved.getFloat(2);
+        Cursor savedData = db.getData();
+        while(savedData.moveToNext()) {
+            history.addView(createNewTextView(savedData.getString(1)));
+            rename = savedData.getFloat(2);
         }
 
-        bal.setText("Current Balance: $" + decimalformat.format(rename));
+        bal.setText("Current Balance: $" + df.format(rename));
+
+    }
+
+    private  OnClickListener onClickForSearch() {
+        return new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String tester = startDate.getText().toString();
+                String tester2 = endDate.getText().toString();
+                String firstAmount = startAmount.getText().toString();
+                String secondAmount = endAmount.getText().toString();
+                history.removeAllViews();
+                Cursor DateData = db.getDateData(startDate.getText().toString(), endDate.getText().toString());
+                Cursor AmountDateData = db.getDateAndAmountData(startDate.getText().toString(), endDate.getText().toString(), firstAmount, secondAmount);
+                Cursor AmountData = db.getAmountData(firstAmount, secondAmount);
+
+                if (!firstAmount.matches("") && !secondAmount.matches("") && !tester.matches("Start Date") && !tester2.matches("End Date")) {
+                    while(AmountDateData.moveToNext()) {
+                        history.addView(createNewTextView(AmountDateData.getString(1)));
+                    }
+                }
+                else if (!firstAmount.matches("") && !secondAmount.matches("")) {
+                    while(AmountData.moveToNext()) {
+                        history.addView(createNewTextView(AmountData.getString(1)));
+                    }
+                }
+                else if (!tester.matches("Start Date") && !tester2.matches("End Date")) {
+                    while(DateData.moveToNext()) {
+                        history.addView(createNewTextView(DateData.getString(1)));
+                    }
+                }
+
+            }
+        };
     }
 
     private OnClickListener clickAdd() {
         return new OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                String a = "Adding $" + amount.getText().toString() + " on " + dateButton.getText().toString() + " from " + desc.getText().toString();
-                history.addView(createNewTextView(a));
-                rename += Float.parseFloat(amount.getText().toString());
-                db.addData(a, rename, dateButton.getText().toString());
-                bal.setText("Current Balance: $" + decimalformat.format(rename));
+                history.removeAllViews();
 
+                Cursor savedData = db.getData();
+                while(savedData.moveToNext()) {
+                    history.addView(createNewTextView(savedData.getString(1)));
+                }
+
+                String a = "Adding $" + amount.getText().toString() + " on " + dateButton.getText().toString() +
+                        " from " + desc.getText().toString();
+                history.addView(createNewTextView(a));
+
+                rename += Float.parseFloat(amount.getText().toString());
+
+                db.addData(a, rename, dateButton.getText().toString(), Float.parseFloat(amount.getText().toString()));
+                bal.setText("Current Balance: $" + df.format(rename));
             }
         };
     }
 
     private OnClickListener clickSub() {
         return new OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                String a = "Spent $" + amount.getText().toString() + " on " + dateButton.getText().toString() + " from " + desc.getText().toString();
+                history.removeAllViews();
+
+                Cursor savedData = db.getData();
+                while(savedData.moveToNext()) {
+                    history.addView(createNewTextView(savedData.getString(1)));
+                }
+
+                String a = "Spent $" + amount.getText().toString() + " on " + dateButton.getText().toString() +
+                        " for " + desc.getText().toString();
                 history.addView(createNewTextView(a));
+
                 rename -= Float.parseFloat(amount.getText().toString());
-                db.addData(a, rename, dateButton.getText().toString());
-                bal.setText("Current Balance: $" + decimalformat.format(rename));
+
+                db.addData(a, rename, dateButton.getText().toString(), Float.parseFloat(amount.getText().toString()));
+                bal.setText("Current Balance: $" + df.format(rename));
             }
         };
     }
@@ -112,69 +159,62 @@ public class MainActivity extends AppCompatActivity {
         return newNote;
     }
 
-
-    private OnClickListener ClickForDate() {
+    private  OnClickListener ClickForDate() {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
-                day = c.get(Calendar.DAY_OF_MONTH);
-                date = c.get(Calendar.DATE);
-                //tried to use date did not work.
+                dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
                 datePickerDialog = new DatePickerDialog(MainActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                dateButton.setText((year) + "-" + (month + 1) + "-" + day);
+                                dateButton.setText(year + "-" + (month + 1) + "-" + day);
                             }
-                        }, year, month, day);
+                        }, year, month, dayOfMonth);
                 datePickerDialog.show();
             }
         };
     }
 
-    private  OnClickListener ClickForStartDate() {
+    private  OnClickListener onClickForStartDate() {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
-                day = c.get(Calendar.DAY_OF_MONTH);
+                dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
                 datePickerDialog = new DatePickerDialog(MainActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                startDate.setText((month+1) + "/" + day + "/" + year);
+                                startDate.setText(year + "-" + (month + 1) + "-" + day);
                             }
-                        }, year, month, day);
-                datePickerDialog.getDatePicker().setMinDate(0);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                        }, year, month, dayOfMonth);
                 datePickerDialog.show();
             }
         };
     }
 
-    private  OnClickListener ClickForEndDate() {
+    private  OnClickListener onClickForEndDate() {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
                 year = c.get(Calendar.YEAR);
                 month = c.get(Calendar.MONTH);
-                day = c.get(Calendar.DAY_OF_MONTH);
+                dayOfMonth = c.get(Calendar.DAY_OF_MONTH);
                 datePickerDialog = new DatePickerDialog(MainActivity.this,
                         new DatePickerDialog.OnDateSetListener() {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                                endDate.setText((month+1) + "/" + day + "/" + year);
+                                endDate.setText(year + "-" + (month + 1) + "-" + day);
                             }
-                        }, year, month, day);
-                datePickerDialog.getDatePicker().setMinDate(0);
-                datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+                        }, year, month, dayOfMonth);
+
                 datePickerDialog.show();
             }
         };
     }
-
 
 }

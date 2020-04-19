@@ -136,6 +136,7 @@
                     android:id="@+id/startAmount"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     />
                 <TextView
                     android:layout_height="wrap_content"
@@ -150,6 +151,7 @@
                     android:id="@+id/endAmount"
                     android:layout_width="80dp"
                     android:layout_height="wrap_content"
+                    android:inputType="number"
                     />
             </LinearLayout>
                 <Button
