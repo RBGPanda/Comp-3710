@@ -32,13 +32,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        c = Calendar.getInstance();
-        search = findViewById(R.id.search);
-        search.setOnClickListener(onClickForSearch());
-        startAmount = findViewById(R.id.startAmount);
-        endAmount = findViewById(R.id.endAmount);
-        endDate = findViewById(R.id.endDate);
-        endDate.setOnClickListener(onClickForEndDate());
         dateButton = findViewById(R.id.dateButton);
         dateButton.setOnClickListener(ClickForDate());
         year = c.get(Calendar.YEAR);
@@ -55,6 +48,14 @@ public class MainActivity extends AppCompatActivity {
         startDate = findViewById(R.id.startDate);
         startDate.setOnClickListener(onClickForStartDate());
         rename = 0.0f;
+        c = Calendar.getInstance();
+        search = findViewById(R.id.search);
+        search.setOnClickListener(onClickSearch());
+        startAmount = findViewById(R.id.startAmount);
+        endAmount = findViewById(R.id.endAmount);
+        endDate = findViewById(R.id.endDate);
+        endDate.setOnClickListener(onClickForEndDate());
+
 
         db = new SpendDB(this);
 
@@ -68,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private  OnClickListener onClickForSearch() {
+    private  OnClickListener onClickSearch() {
         return new OnClickListener() {
             @Override
             public void onClick(View v) {
